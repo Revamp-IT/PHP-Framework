@@ -6,5 +6,8 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Focusdigital\\Framework\\' => array($baseDir . '/src'),
+    'Revamp\\Service\\' => array($baseDir . '/service'),
+    'Revamp\\Bin\\' => array($baseDir . '/bin'),
+    'Revamp\\App\\' => array($baseDir . '/src'),
+    'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
 );

@@ -1,15 +1,21 @@
 {
-    "name": "focusdigital/framework",
+    "name": "revampit/framework",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Focus\\": "src/"
+            "Revamp\\Bin\\": "bin/",
+            "Revamp\\App\\": "src/",
+            "Revamp\\Service\\": "service/"
         }
     },
     "authors": [
         {
-            "name": "FOCUS Digital"
+            "name": "Revamp IT"
         }
     ],
-    "require": {}
+    "require": {
+        "php": "^8.0",
+        "ext-pdo": "*",
+        "phpmailer/phpmailer": "^6.9"
+    }
 }

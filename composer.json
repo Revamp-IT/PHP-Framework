@@ -5,7 +5,7 @@
         "psr-4": {
             "Revamp\\Bin\\": "bin/",
             "Revamp\\App\\": "src/",
-            "Revamp\\Service\\": "service/"
+            "Revamp\\Core\\": "core/"
         }
     },
     "authors": [
@@ -16,6 +16,7 @@
     "require": {
         "php": "^8.0",
         "ext-pdo": "*",
-        "phpmailer/phpmailer": "^6.9"
+        "phpmailer/phpmailer": "6.9.1",
+        "predis/predis": "2.2.2"
     }
 }

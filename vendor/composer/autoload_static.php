@@ -9,20 +9,21 @@ class ComposerStaticInit51b46f252b292aea504da80bb5368423
     public static $prefixLengthsPsr4 = array (
         'R' => 
         array (
-            'Revamp\\Service\\' => 15,
+            'Revamp\\Core\\' => 12,
             'Revamp\\Bin\\' => 11,
             'Revamp\\App\\' => 11,
         ),
         'P' => 
         array (
+            'Predis\\' => 7,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Revamp\\Service\\' => 
+        'Revamp\\Core\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/service',
+            0 => __DIR__ . '/../..' . '/core',
         ),
         'Revamp\\Bin\\' => 
         array (
@@ -31,6 +32,10 @@ class ComposerStaticInit51b46f252b292aea504da80bb5368423
         'Revamp\\App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Predis\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/predis/predis/src',
         ),
         'PHPMailer\\PHPMailer\\' => 
         array (

@@ -2,7 +2,7 @@
 
 namespace Revamp\App\Request\Deal;
 
-use Revamp\Service\Types\Request\RequestTemplate;
+use Revamp\Core\Types\Template\Request\RequestTemplate;
 
 class GetDealsByCompanyRequest extends RequestTemplate
 {

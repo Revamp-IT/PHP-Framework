@@ -2,7 +2,7 @@
 
 namespace Revamp\App\DataMap;
 
-use Revamp\Service\Types\DataMap\DataMap;
+use Revamp\Core\Types\DataMap\DataMap;
 
 class Deal extends DataMap
 {

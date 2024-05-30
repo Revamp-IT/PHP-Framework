@@ -2,11 +2,11 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-use Revamp\Service\Router\Router;
-use Revamp\Service\Container\Container;
+use Revamp\Core\Container\Container;
+use Revamp\Core\Bootstrap\BootstrapInterface;
 
 try {
-    $router = new Router(new Container());
+    Container::getInstance()->get(BootstrapInterface::class)->boot();
 } catch (Throwable $exception) {
     echo 'Error: "' . $exception->getMessage() . '" in ' . $exception->getFile() . ':' . $exception->getLine();
 }

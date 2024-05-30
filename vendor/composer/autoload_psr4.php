@@ -6,8 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Revamp\\Service\\' => array($baseDir . '/service'),
+    'Revamp\\Core\\' => array($baseDir . '/core'),
     'Revamp\\Bin\\' => array($baseDir . '/bin'),
     'Revamp\\App\\' => array($baseDir . '/src'),
+    'Predis\\' => array($vendorDir . '/predis/predis/src'),
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
 );

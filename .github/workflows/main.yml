@@ -17,7 +17,7 @@ jobs:
         with:
           python-version: '3.10'
       - name: Install Deployer
-        run: pip install revampdeployer asyncssh 
+        run: pip install revampdeployer asyncssh tqdm loguru
       - name: Deploy 
         working-directory: ./util/deployer/
         run: revampdeployer staging

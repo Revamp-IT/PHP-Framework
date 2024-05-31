@@ -10,4 +10,13 @@ abstract class ResponseTemplate implements ResponseTemplateInterface
     {
         throw new Exception("Non-existing field {$name}");
     }
+
+    public final function fill(array $data): void
+    {
+        unset($data['id']);
+
+        foreach ($data as $key => $value) {
+            $this->$key = $value;
+        }
+    }
 }

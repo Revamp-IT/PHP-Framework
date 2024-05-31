@@ -1,8 +1,8 @@
 servers = {
     "staging": {
-        "address": "147.45.239.4",
-        "username": "root",
-        "password": "g1H.YPTH@Kv.UC"
+        "address": "",
+        "username": "",
+        "password": ""
     }
 }
 

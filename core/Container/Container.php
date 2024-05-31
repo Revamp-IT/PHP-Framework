@@ -44,7 +44,6 @@ final class Container implements ContainerInterface
     {
         $this->registerCore(BootstrapInterface::class, Bootstrap::class);
         $this->registerCore(RequestHandlerInterface::class,RequestHandler::class);
-        $this->registerCore(RouterInterface::class, RouterDeprecated::class);
         $this->registerCore(ConfigManagerInterface::class, ConfigManager::class);
         $this->registerCore(DataMapHandlerInterface::class, DataMapHandler::class);
         $this->registerCore(UserHandlerInterface::class, UserHandler::class);

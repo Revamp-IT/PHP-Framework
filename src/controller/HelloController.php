@@ -14,15 +14,15 @@ use Revamp\Core\User\Response\CreateUserResponse;
 use Revamp\Core\User\UserHandlerInterface;
 
 #[Bruno(name: 'User')]
-class UserController extends ControllerTemplate
+class HelloController extends ControllerTemplate
 {
-    #[Route(uri: '/register', methods: ['POST'])]
+    #[Route(uri: '/hello', methods: ['POST'])]
     #[Request(requestTemplate: CreateUserRequest::class)]
     #[Response(responseTemplate: CreateUserResponse::class)]
     #[Bruno(name: 'Create User')]
-    public function register(UserHandlerInterface $user): void
+    public function register(): void
     {
-        $user->register($this->request->login, $this->request->password);
+
     }
 
     #[Route(uri: '/authorize', methods: ['POST'])]

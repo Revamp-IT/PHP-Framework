@@ -5,9 +5,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="Revamp\App\" />
       <sourceFolder url="file://$MODULE_DIR$/bin" isTestSource="false" packagePrefix="Revamp\Bin\" />
       <sourceFolder url="file://$MODULE_DIR$/core" isTestSource="false" packagePrefix="Revamp\Core\" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/phpmailer/phpmailer" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/predis/predis" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

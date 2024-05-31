@@ -4,7 +4,6 @@ namespace Revamp\Core\Bootstrap;
 
 use ReflectionClass;
 use ReflectionMethod;
-use ReflectionProperty;
 use Revamp\Core\Cache\CacheHandlerInterface;
 use Revamp\Core\ConfigManager\ConfigManagerInterface;
 use Revamp\Core\Container\Container;
@@ -53,6 +52,8 @@ class Bootstrap implements BootstrapInterface
         $response = $this->requestHandler->getMethod() != 'OPTIONS' ? $this->work() : $this->responseOptions();
 
         foreach ($this->headerHandler->getResponseHeaders() as $header) header($header);
+
+        echo $response;
     }
 
     private function work(): string

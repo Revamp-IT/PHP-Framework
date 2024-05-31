@@ -52,6 +52,6 @@ final class Token implements TokenInterface
 
         if ($header['time'] < time() || $header['ip'] != $_SERVER['REMOTE_ADDR']) return false;
 
-        return $this->getPart($token, 3, false) == hash_hmac('sha256', $this->getPart($token, 1) . '.' . $this->getPart($token, 2), $this->config->get('SECRET'));
+        return $this->getPart($token, 3, false) == hash_hmac('sha256', $this->getPart($token, 1, false) . '.' . $this->getPart($token, 2, false), $this->config->get('SECRET'));
     }
 }

@@ -1,6 +1,6 @@
 /vendor/
 /.idea/
-/bruno
+/bruno/
 .env
 composer.lock
 .DS_STORE

@@ -8,7 +8,7 @@ final class ConfigManager implements ConfigManagerInterface
 
     public final function __construct()
     {
-        $file = file_get_contents(__DIR__ . '/../../.env');
+        $file = file_get_contents(__DIR__ . '/../../.env.example');
         $lines = explode("\n", $file);
 
         foreach ($lines as $line) {

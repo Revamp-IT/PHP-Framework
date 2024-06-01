@@ -4,4 +4,5 @@
 
 ## Основы <a href="#base" id="base"></a>
 
-* [Цикл жизни приложения](base/cikl-zhizni-prilozheniya.md)
+* [Архитектура](base/arkhitektura.md)
+* [Цикл жизни](base/cikl-zhizni.md)

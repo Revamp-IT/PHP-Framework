@@ -20,6 +20,7 @@ use Revamp\Core\Types\Template\Controller\ControllerTemplate;
 use Revamp\Core\Types\Template\Request\RequestTemplateInterface;
 use Revamp\Core\Types\Template\Response\ResponseTemplateInterface;
 use Revamp\Core\Types\Token\Authenticate;
+use stdClass;
 
 class Bootstrap implements BootstrapInterface
 {
@@ -29,6 +30,7 @@ class Bootstrap implements BootstrapInterface
     private ReflectionClass $reflector;
     private ReflectionMethod $reflectorMethod;
 
+    private stdClass $uriParams;
     private string $requestTemplate;
     private string $responseTemplate;
 
@@ -56,6 +58,30 @@ class Bootstrap implements BootstrapInterface
         echo $response;
     }
 
+    private function matchUri(string $pattern, string $uri): bool
+    {
+        if (!str_ends_with($pattern, '/')) $pattern .= '/';
+
+        $patternParts = explode('/', $pattern);
+        $uriParts = explode('/', $uri);
+
+        if (count($patternParts) != count($uriParts)) return false;
+
+        $index = 0;
+        foreach ($patternParts as $part){
+            if (str_starts_with($part, '{')) {
+                unset($patternParts[$index]);
+                unset($uriParts[$index]);
+            }
+
+            $index++;
+        }
+
+        if (count(array_diff($patternParts, $uriParts)) != 0) return false;
+
+        return true;
+    }
+
     private function work(): string
     {
         $this->headerHandler->setResponseHeader('Content-Type: application/json');
@@ -66,7 +92,7 @@ class Bootstrap implements BootstrapInterface
         $cache = $this->getCache();
         if (is_string($cache)) return $cache;
 
-        $this->getActionTemplates()->validateRequestBody()->prepareActionDependencies()->runAction()->validateResponseBody();
+        $this->getActionTemplates()->collectUriParams()->validateRequestBody()->prepareActionDependencies()->runAction()->validateResponseBody();
 
         $data = $this->makeResponse();
 
@@ -100,7 +126,9 @@ class Bootstrap implements BootstrapInterface
 
                     $args = $attribute->getArguments();
 
-                    if ($args['uri'] == $this->requestHandler->getUri() and in_array($this->requestHandler->getMethod(), $args['methods'])) {
+                    if ($this->matchUri($args['uri'], $this->requestHandler->getUri()) and in_array($this->requestHandler->getMethod(), $args['methods'])) {
+                        $this->requestHandler->setParams($args['uri']);
+
                         $this->controllerName = $controller;
                         $this->reflector = $reflector;
 
@@ -172,6 +200,16 @@ class Bootstrap implements BootstrapInterface
         return $this;
     }
 
+    private function collectUriParams(): Bootstrap
+    {
+        $params = new stdClass();
+        foreach ($this->requestHandler->getParams() as $field => $value) $params->$field = $value;
+
+        $this->uriParams = $params;
+
+        return $this;
+    }
+
     private function validateRequestBody(): Bootstrap
     {
         $template = new $this->requestTemplate;
@@ -206,6 +244,7 @@ class Bootstrap implements BootstrapInterface
         $method = $this->controllerMethod;
 
         $controller = new $this->controllerName(
+            $this->uriParams,
             $this->filledRequestTemplate,
             new $this->responseTemplate
         );

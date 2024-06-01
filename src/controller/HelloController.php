@@ -13,12 +13,12 @@ use Revamp\Core\Types\Template\Controller\ControllerTemplate;
 #[Bruno(name: 'User')]
 class HelloController extends ControllerTemplate
 {
-    #[Route(uri: '/hello', methods: ['POST'])]
+    #[Route(uri: '/hello/{id}/', methods: ['GET'])]
     #[Request(requestTemplate: HelloRequest::class)]
     #[Response(responseTemplate: HelloResponse::class)]
     #[Bruno(name: 'Send Hello')]
     public function sendHello(): void
     {
-        $this->response->data = "Hello, {$this->request->name}";
+        $this->response->data = "Hello, {$this->request->name}! Your ID: {$this->params->id}";
     }
 }

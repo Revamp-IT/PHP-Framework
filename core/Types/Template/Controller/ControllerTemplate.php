@@ -9,8 +9,9 @@ use stdClass;
 abstract class ControllerTemplate extends stdClass implements ControllerTemplateInterface
 {
     public final function __construct(
+        protected stdClass $params,
         protected RequestTemplateInterface  $request,
-        protected ResponseTemplateInterface $response,
+        protected ResponseTemplateInterface $response
     ) {}
 
     public final function getResponse(): ResponseTemplateInterface

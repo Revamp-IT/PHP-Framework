@@ -4,7 +4,7 @@ namespace Revamp\Core\JsonError;
 
 define("DM1", ["The unique key was repeated", 400, "DM1"]);
 
-define("R1", ["The URI is not bound to any controller method", 400, "R1"]);
+define("R1", ["The URI is not bound to any controller method", 404, "R1"]);
 define("R2", ["Some fields of the specified Request Template were not filled in the request", 400, "R2"]);
 define("R3", ["Some fields of the specified Response Template were not filled in the response", 400, "R3"]);
 

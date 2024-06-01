@@ -8,6 +8,7 @@ class RequestHandler implements RequestHandlerInterface
     private string $ip;
     private string $uri;
     private array $body;
+    private array $params;
 
     public function __construct()
     {
@@ -29,12 +30,30 @@ class RequestHandler implements RequestHandlerInterface
 
     private function setUri(): void
     {
-        $this->uri = $_SERVER['REQUEST_URI'];
+        $uri = $_SERVER['REQUEST_URI'];
+        if (!str_ends_with($uri, '/')) $uri .= '/';
+        $this->uri = $uri;
     }
 
     private function setBody(): void
     {
         $this->body = json_decode(file_get_contents('php://input'), true);
+    }
+
+    public function setParams(string $pattern): void
+    {
+        $patternParts = explode('/', $pattern);
+        $uriParts = explode('/', $this->uri);
+
+        $params = [];
+
+        $i = 0;
+        foreach ($patternParts as $part) {
+            if (str_starts_with($part, '{')) $params[substr($part, 1, -1)] = $uriParts[$i];
+            $i++;
+        }
+
+        $this->params = $params;
     }
 
     public function getMethod(): string
@@ -55,5 +74,10 @@ class RequestHandler implements RequestHandlerInterface
     public function getBody(): array
     {
         return $this->body;
+    }
+
+    public function getParams(): array
+    {
+        return $this->params;
     }
 }

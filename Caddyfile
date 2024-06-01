@@ -1,4 +1,4 @@
-user.staging.business.revampit.ru {
+server_domain {
         root * /var/www/html
         php_fastcgi unix//run/php/php8.2-fpm.sock
         file_server

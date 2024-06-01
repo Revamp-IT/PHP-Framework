@@ -8,16 +8,18 @@ description: >-
 
 Первоначально, давайте разберемся со стандартом запросов и ответов в **Cheapy**.
 
-## Ввод <a href="#input" id="input"></a>
+### Запрос <a href="#input" id="input"></a>
 
-Поддерживаемые методы запроов: **GET**, **POST**, **PUT**, **DELETE**, **OPTIONS**
+Поддерживаемые методы запросов: **GET**, **POST**, **PUT**, **DELETE**, **OPTIONS**
 
 Для всех методов, кроме **GET** и **OPTIONS** данные необходимо передавать в **Body**, в формате **JSON,** с заголовком `Content-Type: application/json`, другие форматы, например `x-www-form-urlencoded` или `form-data` не поддерживаются.
 
-## Вывод <a href="#output" id="output"></a>
+### Ответ <a href="#output" id="output"></a>
 
 Ответ всегда содержит **JSON** с заголовком `Content-Type: application/json`&#x20;
 
 
 
 Теперь можно разобрать промежуточные этапы.
+
+### Роутинг

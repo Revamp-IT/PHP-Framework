@@ -177,7 +177,10 @@ class Bootstrap implements BootstrapInterface
         $attribute = $this->reflectorMethod->getAttributes(Cache::class);
 
         if ($attribute) {
-            $uri = $this->cacheHandler->buildKey($this->requestHandler->getUri(), $this->requestHandler->getBody());
+            $uri = $this->cacheHandler->buildKey(
+                $this->requestHandler->getUri(),
+                $this->requestHandler->getParams()
+            );
 
             $data = $this->cacheHandler->get($uri);
 
@@ -273,7 +276,10 @@ class Bootstrap implements BootstrapInterface
         $attribute = $this->reflectorMethod->getAttributes(Cache::class);
 
         if ($attribute) {
-            $uri = $this->cacheHandler->buildKey($this->requestHandler->getUri(), $this->requestHandler->getBody());
+            $uri = $this->cacheHandler->buildKey(
+                $this->requestHandler->getUri(),
+                $this->requestHandler->getParams()
+            );
 
             $this->cacheHandler->set($uri, json_encode(get_object_vars($this->filledResponseTemplate)));
         }

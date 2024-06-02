@@ -5,7 +5,9 @@ namespace Revamp\Core\DataMapHandler;
 use Exception;
 use PDO;
 use ReflectionClass;
+use Revamp\Core\Cache\CacheHandlerInterface;
 use Revamp\Core\ConfigManager\ConfigManagerInterface;
+use Revamp\Core\RequestHandler\RequestHandlerInterface;
 use Revamp\Core\Types\DataMap\Required;
 use Revamp\Core\Types\DataMap\Unique;
 use Revamp\Core\Types\Template\DataMap\DataMapTemplateInterface;
@@ -17,7 +19,9 @@ final class DataMapHandler implements DataMapHandlerInterface
     private string $table;
 
     public final function __construct(
-        private ConfigManagerInterface $config
+        private ConfigManagerInterface $config,
+        private RequestHandlerInterface $requestHandler,
+        private CacheHandlerInterface $cacheHandler
     )
     {
         $this->connect();
@@ -88,6 +92,17 @@ final class DataMapHandler implements DataMapHandlerInterface
         return substr($values, 0, -2);
     }
 
+    private function buildUpdateSet(array $data): string
+    {
+        $set = '';
+
+        foreach ($data as $key => $value) {
+            $set .= '"' . $key . '"=' . "'" . $value . "', ";
+        }
+
+        return substr($set, 0, -2);
+    }
+
     private function fillMap(array $data): array
     {
         $mapReflector = new ReflectionClass($this->map);
@@ -141,6 +156,16 @@ final class DataMapHandler implements DataMapHandlerInterface
         return !empty($this->getBy($uniqueProperties));
     }
 
+    private function updateCache(): void
+    {
+        $uriParts = explode('/', $this->requestHandler->getUri());
+        $params = implode(',', array_values($this->requestHandler->getParams()));
+        $pattern = "{$uriParts[0]}:*#{{$params}}";
+
+        $keys = $this->cacheHandler->keys($pattern);
+        $this->cacheHandler->delete($keys);
+    }
+
     public final function getById(int $id): array
     {
         $stmt = $this->connection->prepare("SELECT * FROM \"{$this->table}\" WHERE id = :id");
@@ -170,6 +195,29 @@ final class DataMapHandler implements DataMapHandlerInterface
         if ($this->isRepeated($data)) throw new Exception("Repeated data in unique columns");
 
         $stmt = $this->connection->prepare("INSERT INTO \"{$this->table}\" ({$columns}) VALUES ({$values})");
+
+        return $stmt->execute();
+    }
+
+    public final function updateOneById(int $id, array $data): bool
+    {
+        $set = $this->buildUpdateSet($data);
+
+        $stmt = $this->connection->prepare("UPDATE \"{$this->table}\" SET {$set} WHERE \"id\"='{$id}'");
+
+        $res = $stmt->execute();
+        if (!$res) return $res;
+
+        $this->updateCache();
+
+        return true;
+    }
+
+    public final function deleteOneById(int $id): bool
+    {
+        $stmt = $this->connection->prepare("DELETE FROM \"{$this->table}\" WHERE \"id\"='{$id}'");
+
+        $this->updateCache();
 
         return $stmt->execute();
     }

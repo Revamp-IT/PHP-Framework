@@ -20,9 +20,20 @@ final class CacheHandler implements CacheHandlerInterface
         ]);
     }
 
-    public final function buildKey(string $uri, array $body): string
+    public final function buildKey(string $uri, array $params): string
     {
-        return str_replace('/', ':', $uri) . "?" . http_build_query($body);
+        $uriParts = explode('/', $uri);
+
+        $index = 0;
+        foreach ($uriParts as $part) {
+            if (ctype_digit($part)) {
+                unset($uriParts[$index]);
+            }
+
+            $index++;
+        }
+
+        return implode(':', $uriParts) . '#{' . implode(',', array_values($params)) . '}';
     }
 
     public final function get(string $key): string
@@ -33,5 +44,15 @@ final class CacheHandler implements CacheHandlerInterface
     public final function set(string $key, string $value): void
     {
         $this->client->set($key, $value);
+    }
+
+    public final function keys(string $pattern): array
+    {
+        return $this->client->keys($pattern);
+    }
+
+    public final function delete(string|array $keys): void
+    {
+        $this->client->del($keys);
     }
 }

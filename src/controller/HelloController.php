@@ -2,6 +2,7 @@
 
 namespace Revamp\App\Controller;
 
+use Revamp\App\Helper\HelloHelper;
 use Revamp\App\Request\Hello\HelloRequest;
 use Revamp\App\Response\Hello\HelloResponse;
 use Revamp\Core\Types\Bruno\Bruno;
@@ -19,8 +20,8 @@ class HelloController extends ControllerTemplate
     #[Response(responseTemplate: HelloResponse::class)]
     #[Cache]
     #[Bruno(name: 'Send Hello')]
-    public function sendHello(): void
+    public function sendHello(HelloHelper $helper): void
     {
-        $this->response->data = "Hello, {$this->params->name}! Your ID: {$this->params->id}";
+        $this->response->data = "{$helper->getString()}, {$this->params->name}! Your ID: {$this->params->id}";
     }
 }

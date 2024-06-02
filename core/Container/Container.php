@@ -29,7 +29,7 @@ use ReflectionClass;
 
 final class Container implements ContainerInterface
 {
-    private array $objects;
+    private array $objects = [];
     private array $cores;
     protected static ?ContainerInterface $instance = null;
 
@@ -42,26 +42,26 @@ final class Container implements ContainerInterface
 
     public function __construct()
     {
-        $this->registerCore(BootstrapInterface::class, Bootstrap::class);
-        $this->registerCore(RequestHandlerInterface::class,RequestHandler::class);
-        $this->registerCore(ConfigManagerInterface::class, ConfigManager::class);
-        $this->registerCore(DataMapHandlerInterface::class, DataMapHandler::class);
-        $this->registerCore(UserHandlerInterface::class, UserHandler::class);
-        $this->registerCore(HeaderInterface::class, Header::class);
-        $this->registerCore(TokenInterface::class, Token::class);
-        $this->registerCore(CacheHandlerInterface::class, CacheHandler::class);
-        $this->registerCore(JsonErrorInterface::class, JsonError::class);
-        $this->registerCore(CookieInterface::class, Cookie::class);
+        $this->register(BootstrapInterface::class, Bootstrap::class);
+        $this->register(RequestHandlerInterface::class,RequestHandler::class);
+        $this->register(ConfigManagerInterface::class, ConfigManager::class);
+        $this->register(DataMapHandlerInterface::class, DataMapHandler::class);
+        $this->register(UserHandlerInterface::class, UserHandler::class);
+        $this->register(HeaderInterface::class, Header::class);
+        $this->register(TokenInterface::class, Token::class);
+        $this->register(CacheHandlerInterface::class, CacheHandler::class);
+        $this->register(JsonErrorInterface::class, JsonError::class);
+        $this->register(CookieInterface::class, Cookie::class);
 
         $this->registerComponents();
     }
 
-    public final function get(string $interface): object
+    public final function get(string $interfaceOrClass): object
     {
-        return $this->objects[$interface] ?? $this->prepareObject($interface);
+        return $this->objects[$interfaceOrClass] ?? $this->prepareObject($interfaceOrClass);
     }
 
-    public final function registerCore(string $interface, string $class): void
+    public final function register(string $interface, string $class): void
     {
         $this->cores[$interface] = $class;
     }
@@ -74,10 +74,16 @@ final class Container implements ContainerInterface
         }
     }
 
-    private function prepareObject(string $interface): object
+    private function prepareObject(string $interfaceOrClass): object
     {
-        $class = $this->cores[$interface];
-        $reflector = new ReflectionClass($class);
+        $reflector = new ReflectionClass($interfaceOrClass);
+
+        if ($reflector->isInterface()) {
+            $class = $this->cores[$interfaceOrClass];
+            $reflector = new ReflectionClass($class);
+        } else {
+            $class = $interfaceOrClass;
+        }
 
         $constructReflector = $reflector->getConstructor();
         if (empty($constructReflector)) {
